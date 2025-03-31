@@ -8,7 +8,7 @@ CREATE TABLE `pais` (
   `nome_pais` varchar(100) NOT NULL,
   PRIMARY KEY (`id_pais`),
   UNIQUE KEY `pais_unique` (`nome_pais`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `sexo` (
   `id_sexo` bigint NOT NULL AUTO_INCREMENT,
@@ -17,7 +17,7 @@ CREATE TABLE `sexo` (
   `abreviatura_sexo` char(1) NOT NULL,
   PRIMARY KEY (`id_sexo`),
   UNIQUE KEY `sexo_unique` (`nome_sexo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `categoria` (
   `id_categoria` bigint NOT NULL AUTO_INCREMENT,
@@ -25,7 +25,7 @@ CREATE TABLE `categoria` (
   `categoria_pai` bigint NOT NULL,
   PRIMARY KEY (`id_categoria`),
   UNIQUE KEY `categoria_unique` (`nome_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 2. Tabelas que dependem de `pais`
 CREATE TABLE `estado` (
@@ -36,7 +36,7 @@ CREATE TABLE `estado` (
   UNIQUE KEY `estado_unique` (`nome_estado`),
   KEY `estado_pais_FK` (`id_pais`),
   CONSTRAINT `estado_pais_FK` FOREIGN KEY (`id_pais`) REFERENCES `pais` (`id_pais`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `cidade` (
   `id_cidade` bigint NOT NULL AUTO_INCREMENT,
@@ -46,7 +46,7 @@ CREATE TABLE `cidade` (
   UNIQUE KEY `cidade_unique` (`nome_cidade`),
   KEY `cidade_estado_FK` (`id_estado`),
   CONSTRAINT `cidade_estado_FK` FOREIGN KEY (`id_estado`) REFERENCES `estado` (`id_estado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 3. Tabelas que dependem de `sexo`
 CREATE TABLE `pessoa_fisica` (
@@ -114,7 +114,7 @@ CREATE TABLE `endereco` (
   PRIMARY KEY (`id_endereco`),
   KEY `endereco_pais_FK` (`id_pais`),
   CONSTRAINT `endereco_pais_FK` FOREIGN KEY (`id_pais`) REFERENCES `pais` (`id_pais`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 6. Tabelas que dependem de `categoria`
 CREATE TABLE `produto` (
@@ -126,7 +126,7 @@ CREATE TABLE `produto` (
   UNIQUE KEY `produto_unique` (`nome_produto`),
   KEY `produto_categoria_FK` (`id_categoria`),
   CONSTRAINT `produto_categoria_FK` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 7. Tabelas que dependem de `produto`
 CREATE TABLE `estoque` (
@@ -138,7 +138,7 @@ CREATE TABLE `estoque` (
   PRIMARY KEY (`id_estoque`),
   KEY `estoque_produto_FK` (`id_produto`),
   CONSTRAINT `estoque_produto_FK` FOREIGN KEY (`id_produto`) REFERENCES `produto` (`id_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- 8. Tabelas que dependem de `cliente` e `produto`
 CREATE TABLE `cliente` (
@@ -172,19 +172,18 @@ CREATE TABLE `venda` (
   CONSTRAINT `venda_cliente_FK` FOREIGN KEY (`id_comprador`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `venda_cliente_FK_1` FOREIGN KEY (`id_vendedor`) REFERENCES `cliente` (`id_cliente`),
   CONSTRAINT `venda_produto_FK` FOREIGN KEY (`id_produto`) REFERENCES `produto` (`id_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
-C
 CREATE TABLE `historico_produto` (
   `id_historico_produto` bigint NOT NULL AUTO_INCREMENT,
   `id_produto` bigint NOT NULL,
   `status` tinyint(1) NOT NULL,
-  `data` date NOT NULL,
-  `preco` double NULL,
+  `data` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `preco` double DEFAULT NULL,
   `id_categoria` bigint NOT NULL,
   PRIMARY KEY (`id_historico_produto`),
   KEY `historico_produto_produto_FK` (`id_produto`),
   KEY `historico_produto_categoria_FK` (`id_categoria`),
   CONSTRAINT `historico_produto_categoria_FK` FOREIGN KEY (`id_categoria`) REFERENCES `categoria` (`id_categoria`),
   CONSTRAINT `historico_produto_produto_FK` FOREIGN KEY (`id_produto`) REFERENCES `produto` (`id_produto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=241 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
